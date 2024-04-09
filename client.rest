@@ -1,0 +1,14 @@
+### Variables
+@apiurl = http://localhost:3000/
+
+GET http://localhost:3001/questions
+
+###
+ 
+POST {{apiurl}}
+Content-Type: application/json
+
+{
+    "email": "test@email.com",
+    "question": "how much is 14 squared?"
+}
