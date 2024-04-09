@@ -18,6 +18,18 @@ Make sure you create a .env file with your [Gemini API Key](https://ai.google.de
 GEMINI_APIKEY=your-key-here
 ```
 
+Also, pull Localstack with docker
+
+```bash
+docker pull localstack/localstack:latest
+```
+
+...and start if with
+
+```bash
+localstack start
+```
+
 This project runs 
 - Node.js
 - Gemini AI API
