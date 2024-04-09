@@ -24,7 +24,7 @@ Also, pull Localstack with docker
 docker pull localstack/localstack:latest
 ```
 
-...and start if with
+...and start it with
 
 ```bash
 localstack start
