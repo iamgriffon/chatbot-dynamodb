@@ -1,14 +1,11 @@
 import { DeleteItemCommand, DeleteTableCommand } from "@aws-sdk/client-dynamodb";
 import { client } from "@/db/client";
 
-export const DeleteQuestionItem = async (deletedId: string, deletedEmail: string) => {
+export const DeleteQuestionItem = async (deletedId: string) => {
   const command = new DeleteItemCommand({ TableName: "Questions", Key: {
     id: {
       S: deletedId
     },
-    email: {
-      S: deletedEmail
-    }
   } });
 
   try {

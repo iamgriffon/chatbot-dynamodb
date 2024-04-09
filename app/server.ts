@@ -15,6 +15,11 @@ import { QueryQuestionsById } from './services/read-data-question-table';
 import { QueryAnswersById } from './services/read-data-answer-table';
 import { ScanChatsTable } from './services/read-chat-table';
 import { DeleteChatItem } from './services/delete-data-chat-table';
+import { Migrate } from './db/migrate';
+import { Purge } from './db/purge';
+import questionRoutes from './routes/questions';
+import { ScanQuestionsTable } from './services/read-question-table';
+import answerRoutes from './routes/answers';
 
 interface Body {
    id?: string;
@@ -22,10 +27,11 @@ interface Body {
    email: string;
 }
 
-const app = express()
+export const app = express()
 const port = 3000
 app.use(cors())
 app.use(bodyParser.json())
+
 
 app.post('/', async (req: Request, res: Response) => {
    if (!req.body) return res.send({ error: 'Invalid request body' }).status(400);
@@ -39,7 +45,7 @@ app.post('/', async (req: Request, res: Response) => {
    const WriteQuestionResponse = await WriteDataOnQuestionsTable(QuestionModel);
 
    if (WriteQuestionResponse.$metadata.httpStatusCode === 200) {
-      const AnswerModel = new Answer(QuestionModel.id, AIResponse);
+      const AnswerModel = new Answer(AIResponse);
       const WriteAnswerResponse = await WriteDataOnAnswersTable(AnswerModel);
 
       if (WriteAnswerResponse.$metadata.httpStatusCode === 200) {
@@ -49,7 +55,7 @@ app.post('/', async (req: Request, res: Response) => {
             QuestionModel.id,
             AnswerModel.id)
             .then(async () => (await QueryChatById(ChatModel.chatId))?.Items)
-            .catch(() => res.send({ error: "Not found" }))
+            .catch(() => res.send({ error: "Not found" }).status(404))
          return res.send(
             {
                "question": question,
@@ -77,6 +83,7 @@ app.get('/:id', async (req: Request, res: Response) => {
    ]
 
    const { id } = req.params;
+   if (id === 'questions') return;
    const ChatInfo = await QueryChatById(id).then(data => data?.Items) as QueryResponse;
    if (!ChatInfo) return res.send({ error: "Not found" }).status
    if (ChatInfo) {
@@ -93,27 +100,54 @@ app.get('/:id', async (req: Request, res: Response) => {
             answer: answer[0]?.answer.S,
             createdAt: answer[0]?.createdAt.S
          }
-
-         res.send(response)
+        return res.send(response)
       } catch {
-         res.send({ error: "Not found", status: 404 }).status(404)
+         return res.status(404).send({ error: "Not found", status: 404 })
       }
    }
 })
 
 app.get('/', async (_, res) => {
-   await ScanChatsTable().then(data => res.send({ data: data.Items }))
+   try {
+      await ScanChatsTable().then(data => res.send({ data: data.Items }))
+   } catch {
+      return res.status(404).send({ error: 'Data not found', status: 404 })
+   }
 })
 
 app.delete('/:id', async (req, res) => {
    const { id } = req.params;
    if (!id) return res.send({ error: 'param is requred' }).status(400);
    try {
-      await DeleteChatItem(id as string).then(data => res.send(data));
+      await DeleteChatItem(id as string).then(data => {
+         return res.send({ message: 'Deleted Successfully!', status: data.$metadata.httpStatusCode })
+      })
    } catch {
-      return res.send({ error: "Not found", status: 404 }).status(404);
+      return res.status(404).send({ error: "Not found", status: 404 });
    }
 })
+
+app.get('/questions', async (_, res) => {
+   try {
+      await ScanQuestionsTable().then(data => res.status(data.$metadata.httpStatusCode!).send({ data: data.Items, status: 200 }))
+   } catch (error) {
+     return res.status(500).send({ error: 'Internal server error' })
+   }
+   return;
+})
+
+app.get('/answers', async (_, res) => {
+   try {
+      await ScanQuestionsTable().then(data => res.status(data.$metadata.httpStatusCode!).send({ data: data.Items, status: 200 }))
+   } catch (error) {
+     return res.status(500).send({ error: 'Internal server error' })
+   }
+   return;
+})
+
+app.use('/question', questionRoutes);
+app.use('/answer', answerRoutes);
+
 
 app.listen(port, () => {
    console.log(`Example app listening on port ${port}`)

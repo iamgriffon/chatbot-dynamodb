@@ -97,7 +97,7 @@ describe("Questions Table", async () => {
     });
 
     await WriteDataOnQuestionsTable(question);
-    const res = await DeleteQuestionItem(question.id, question.email);
+    const res = await DeleteQuestionItem(question.id);
 
     it("response should have HTTP Status = 200", async () => {
       expect(res.$metadata.httpStatusCode).toBe(200)
@@ -105,7 +105,7 @@ describe("Questions Table", async () => {
 
     it("should not contain any elements", async () => {
       await WriteDataOnQuestionsTable(question);
-      await DeleteQuestionItem(question.id, question.email);
+      await DeleteQuestionItem(question.id);
       const amount = (await ScanQuestionsTable()).Count;
       expect(amount).toBe(0)
     })

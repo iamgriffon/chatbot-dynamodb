@@ -12,7 +12,7 @@ export const DeleteChatItem = async (deletedId: string) => {
     const response = await client.send(command);
     return response;
   } catch (error) {
-    console.error("Error deleting table:", error);
+    console.error("Error deleting item:", error);
     throw error;
   }
 }

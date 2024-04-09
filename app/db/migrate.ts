@@ -6,14 +6,14 @@ import { DeleteChatTable } from "../services/delete-chat-table";
 import { DeleteQuestionsTable } from "../services/delete-question-table";
 
 export async function Migrate() {
-  try {
-    await Promise.all([
-      DeleteQuestionsTable(),
-      DeleteAnswersTable(),
-      DeleteChatTable()])
-  } catch {
-    console.log('Error deleting tables')
-  }
+  // try {
+  //   await Promise.all([
+  //     DeleteQuestionsTable(),
+  //     DeleteAnswersTable(),
+  //     DeleteChatTable()])
+  // } catch {
+  //   console.log('Error deleting tables')
+  // }
 
   try {
     await Promise.all([

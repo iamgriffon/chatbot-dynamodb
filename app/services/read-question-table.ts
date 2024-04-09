@@ -3,7 +3,7 @@ import { client } from "@/db/client";
 
 export const ScanQuestionsTable = async () => {
    try {
-      const command = new ScanCommand({ TableName: "Questions", AttributesToGet: ["id"] });
+      const command = new ScanCommand({ TableName: "Questions" });
       const response = await client.send(command);
       return response;
    } catch (error) {
