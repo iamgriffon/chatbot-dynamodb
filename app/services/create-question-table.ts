@@ -1,4 +1,4 @@
-import { CreateTableCommand, ListTablesCommand } from "@aws-sdk/client-dynamodb";
+import { CreateTableCommand } from "@aws-sdk/client-dynamodb";
 import { client } from "@/db/client";
 
 export const SeedQuestionsTable = async () => {
@@ -10,13 +10,13 @@ export const SeedQuestionsTable = async () => {
     ],
     AttributeDefinitions: [
       { AttributeName: "id", AttributeType: "S" },
-      { AttributeName: "email", AttributeType: "S" }
+      { AttributeName: "email", AttributeType: "S" },
     ],
 
     ProvisionedThroughput: {
       ReadCapacityUnits: 5,
-      WriteCapacityUnits: 5
-    }
+      WriteCapacityUnits: 5,
+    },
   });
 
   try {

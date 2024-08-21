@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, afterAll } from "bun:test";
+import { describe, expect, it, beforeEach, afterAll, beforeAll } from "bun:test";
 import { DeleteAnswersTable } from "../services/delete-answer-table";
 import type { CreateTableCommandOutput } from "@aws-sdk/client-dynamodb";
 import { SeedAnswersTable } from "../services/create-answer-table";
@@ -11,6 +11,11 @@ import { ScanAnswersTable } from "../services/read-answer-table";
 const tableName = "Answers"
 
 describe("Answers Table" , async () => {
+  
+  beforeAll(async () => {
+    await SeedAnswersTable()
+  })
+
   beforeEach(async () => {
     try {
      await DeleteAnswersTable();
@@ -18,6 +23,10 @@ describe("Answers Table" , async () => {
       return
     }
   });
+
+  afterAll(async () => {
+    await DeleteAnswersTable();
+  })
   
   describe("it should create a table", async () => {
     let res: CreateTableCommandOutput;
@@ -26,10 +35,10 @@ describe("Answers Table" , async () => {
     });
 
     it("response should have HTTP Status = 200", async () => {
-      expect(res.$metadata?.httpStatusCode).toBe(200);
+      expect(res?.$metadata?.httpStatusCode).toBe(200);
     })
     it("response should have TableStatus = ACTIVE", async () => {
-      expect(res.TableDescription?.TableStatus).toBe("ACTIVE");
+      expect(res?.TableDescription?.TableStatus).toBe("ACTIVE");
     })
     it("Table name should be 'Answers'", async () => {
       expect(res.TableDescription?.TableName).toBe(tableName)
@@ -44,7 +53,7 @@ describe("Answers Table" , async () => {
 
     res = await ScanAnswersTable();
     it("response should have HTTP Status = 200", async () => {
-      expect(res.$metadata?.httpStatusCode).toBe(200);
+      expect(res?.$metadata?.httpStatusCode).toBe(200);
     })
   });
 
@@ -58,14 +67,14 @@ describe("Answers Table" , async () => {
     res = await WriteDataOnAnswersTable(data);
 
     it("response should have HTTP Status = 200", async() => {
-      expect(res.$metadata?.httpStatusCode).toBe(200);
+      expect(res?.$metadata?.httpStatusCode).toBe(200);
     })
     it("response requestId must be a string", async() => {
-      expect(res.$metadata?.requestId).toBeString();
+      expect(res?.$metadata?.requestId).toBeString();
     })
 
     it("response must be equal two", async() => {
-      expect(data.answer.S).toBe('2')
+      expect(data?.answer.S).toBe('2')
     });
 
     it("should have one element", async() => {
@@ -83,11 +92,11 @@ describe("Answers Table" , async () => {
      });
  
      it("response should have HTTP Status = 200", async () => {
-      expect(res.$metadata.httpStatusCode).toBe(200);
+      expect(res?.$metadata.httpStatusCode).toBe(200);
      })
 
      it("response requestId must be a string", async() => {
-      expect(res.$metadata?.requestId).toBeString();
+      expect(res?.$metadata?.requestId).toBeString();
     });
   });
 
@@ -100,7 +109,7 @@ describe("Answers Table" , async () => {
     const res = await DeleteAnswerItem(answer.id);
 
     it("response should have HTTP Status = 200", async () => {
-     expect(res.$metadata.httpStatusCode).toBe(200)
+     expect(res?.$metadata.httpStatusCode).toBe(200)
     })
 
     it("should not contain any elements", async() => {

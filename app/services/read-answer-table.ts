@@ -7,8 +7,8 @@ export const ScanAnswersTable = async () => {
   try {
     const response = await client.send(command);
     return response;
- } catch (error) {
+  } catch (error) {
     console.error("Error reading table:", error);
     throw error;
- }
-}
+  }
+};

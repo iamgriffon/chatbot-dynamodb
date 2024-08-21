@@ -1,7 +1,6 @@
 
 import { DynamoDBDocumentClient, GetCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { client } from "@/db/client";
-import { response } from "express";
 const docClient = DynamoDBDocumentClient.from(client);
 
 export const QueryChatById = async (chatId: string) => {

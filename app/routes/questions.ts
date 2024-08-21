@@ -2,7 +2,6 @@ import express from 'express';
 import { QueryQuestionsById } from '../services/read-data-question-table';
 import { DeleteQuestionItem } from '../services/delete-data-question-table';
 
-// Create a router object
 const questionRoutes = express.Router();
 
 questionRoutes.get('/:id', async (req, res) => {

@@ -1,12 +1,15 @@
-import { DeleteItemCommand, DeleteTableCommand } from "@aws-sdk/client-dynamodb";
+import { DeleteItemCommand } from "@aws-sdk/client-dynamodb";
 import { client } from "@/db/client";
 
 export const DeleteChatItem = async (deletedId: string) => {
-  const command = new DeleteItemCommand({ TableName: "Chats", Key: {
-    chatId: {
-      S: deletedId
-    }
-  } });
+  const command = new DeleteItemCommand({
+    TableName: "Chats",
+    Key: {
+      chatId: {
+        S: deletedId,
+      },
+    },
+  });
 
   try {
     const response = await client.send(command);
@@ -15,4 +18,4 @@ export const DeleteChatItem = async (deletedId: string) => {
     console.error("Error deleting item:", error);
     throw error;
   }
-}
+};

@@ -11,4 +11,4 @@ export const DeleteChatTable = async () => {
     console.error("Error deleting table:", error);
     throw error;
   }
-}
+};

@@ -15,9 +15,7 @@ describe("Chats Table", () => {
 
   beforeAll(async () => {
     await SeedChatTable();
-    chat = new Chat('question.id', 'answer.id');
-    await WriteDataOnChatTable(chat.chatId, 'question.id', 'answer.id');
-  });
+  })
 
   afterAll(async () => {
     await DeleteChatTable();
@@ -27,21 +25,21 @@ describe("Chats Table", () => {
     let res: CreateTableCommandOutput;
 
     beforeAll(async () => {
-      await DeleteChatTable()
+      await DeleteChatTable();
       chat = new Chat('question.id', 'answer.id');
       res = await SeedChatTable();
     });
 
     it("response should have HTTP Status = 200", () => {
-      expect(res.$metadata?.httpStatusCode).toBe(200);
+      expect(res?.$metadata?.httpStatusCode).toBe(200);
     });
 
     it("response should have TableStatus = ACTIVE", () => {
-      expect(res.TableDescription?.TableStatus).toBe("ACTIVE");
+      expect(res?.TableDescription?.TableStatus).toBe("ACTIVE");
     });
 
     it("Table name should be 'Chats'", () => {
-      expect(res.TableDescription?.TableName).toBe(tableName);
+      expect(res?.TableDescription?.TableName).toBe(tableName);
     });
   });
 
@@ -53,7 +51,7 @@ describe("Chats Table", () => {
     });
 
     it("response should have HTTP Status = 200", () => {
-      expect(res.$metadata?.httpStatusCode).toBe(200);
+      expect(res?.$metadata?.httpStatusCode).toBe(200);
     });
   });
 
@@ -61,15 +59,15 @@ describe("Chats Table", () => {
     let res: CreateTableCommandOutput;
 
     beforeAll(async () => {
-      res = await WriteDataOnChatTable(chat.chatId, 'question.id', 'answer.id');
+      res = await WriteDataOnChatTable(chat?.chatId, 'question.id', 'answer.id');
     });
 
     it("response should have HTTP Status = 200", () => {
-      expect(res.$metadata?.httpStatusCode).toBe(200);
+      expect(res?.$metadata?.httpStatusCode).toBe(200);
     });
 
     it("response requestId must be a string", () => {
-      expect(res.$metadata?.requestId).toBeString();
+      expect(res?.$metadata?.requestId).toBeString();
     });
 
     it("should have one element", async () => {

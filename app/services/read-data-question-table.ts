@@ -7,15 +7,15 @@ export const QueryQuestionsById = async (id: string) => {
     TableName: "Questions",
     KeyConditionExpression: "id = :id",
     ExpressionAttributeValues: {
-      ":id": id
+      ":id": id,
     },
-  })
- 
+  });
+
   try {
-     const response = await docClient.send(command);
-     return response;
+    const response = await docClient.send(command);
+    return response;
   } catch (error) {
-     console.error("Error querying Questions table by email:", error);
-     throw error;
+    console.error("Error querying Questions table by email:", error);
+    throw error;
   }
- };
+};

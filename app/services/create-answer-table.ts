@@ -4,16 +4,12 @@ import { client } from "@/db/client";
 export const SeedAnswersTable = async () => {
   const command = new CreateTableCommand({
     TableName: "Answers",
-    KeySchema: [
-      { AttributeName: "id", KeyType: "HASH" },
-    ],
-    AttributeDefinitions: [
-      { AttributeName: "id", AttributeType: "S" },
-    ],
+    KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
+    AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
     ProvisionedThroughput: {
       ReadCapacityUnits: 5,
-      WriteCapacityUnits: 5
-    }
+      WriteCapacityUnits: 5,
+    },
   });
 
   try {
