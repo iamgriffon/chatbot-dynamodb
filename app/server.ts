@@ -1,19 +1,13 @@
 import express, { type Request, type Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { Question } from "@/model/question";
-import { Answer } from "./model/answer";
-import { QueryChatById } from "@/services/read-data-chat-table";
-import { QueryQuestionsById } from "./services/read-data-question-table";
-import { QueryAnswersById } from "./services/read-data-answer-table";
 import { ScanChatsTable } from "./services/read-chat-table";
 import { DeleteChatItem } from "./services/delete-data-chat-table";
 import questionRoutes from "./routes/questions";
 import { ScanQuestionsTable } from "./services/read-question-table";
 import answerRoutes from "./routes/answers";
-import { setupSwagger } from "./swagger/bootstrap.ts";
 import { WriteQuestionResponse } from "./controllers/WriteQuestionController.ts";
-import type { QueryResponse } from "../types";
+import swaggerUi from "swagger-ui-express"
 import { FetchQuestionByIdController } from "./controllers/FetchQuestionById.ts";
 
 export interface Body {
@@ -25,10 +19,9 @@ export interface Body {
 export const app = express();
 const port = 3000;
 
-setupSwagger(app);
-
 app.use(cors());
 app.use(bodyParser.json());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(require("./swagger.json")));
 
 app.post("/", async (req: Request, res: Response) => {
   if (!req.body) return res.send({ error: "Invalid request body" }).status(400);

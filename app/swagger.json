@@ -193,8 +193,8 @@
     }
   },
   "apis": [
-    "./routes/questions.ts",
-    "./routes/answers.ts",
-    "./server.ts"
+    "../routes/questions.ts",
+    "../routes/answers.ts",
+    "../server.ts"
   ]
 }

@@ -26,7 +26,7 @@
     "uuid": "^9.0.1"
   },
   "scripts": {
-    "start": "bun --watch run ./app/server.ts",
+    "start": "concurrently \"bun --watch run ./app/server.ts\" \"cd ./front && bun dev\" \"docker compose up\"",
     "migrate": "bun run ./app/db/migrate.ts",
     "purge": "bun run ./app/db/purge.ts",
     "swagger-gen": "bun run ./app/swagger/generate.ts"
