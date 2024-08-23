@@ -48,4 +48,3 @@ This project is focused oriented on:
 - Unit testing for every single database CRUD Operation
 - Basics of RESTAPI via Express
 - Integrating generative AI to simulate a chatbot via Google Gemini
-- It was done under 12 hours, so I focused more on AWS SDK rather than on the backend's MVC structure.
